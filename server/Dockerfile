@@ -2,14 +2,14 @@
 FROM node:20-alpine AS builder
 WORKDIR /usr/src/app
 
-# Copy package files and install dependencies
+# Copy package.json and install dependencies
 COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
 COPY . .
 
-# Build the application (assumes you have a build script, e.g. "npm run build")
+# Build the application
 RUN npm run build
 
 # Stage 2: Create the production image
@@ -17,15 +17,20 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
-# Copy only the necessary files from the builder stage
-COPY --from=builder /usr/src/app/package*.json ./
-COPY --from=builder /usr/src/app/dist ./dist
+# Install TypeORM and ts-node globally
+RUN npm install -g ts-node typeorm
 
-# Install production dependencies only
-RUN npm install --only=production
+# Copy necessary files from the builder stage
+COPY --from=builder /usr/src/app/package.json ./
+COPY --from=builder /usr/src/app/package-lock.json ./
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/.env ./
+COPY --from=builder /usr/src/app/ormconfig.json ./
+COPY --from=builder /usr/src/app/migrations ./migrations
 
 # Expose the application port
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "dist/main.js"]
+# Run migrations before starting the server
+CMD ["sh", "-c", "npx typeorm migration:run -d dist/data-source.js && npm run start:prod"]

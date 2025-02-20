@@ -6,7 +6,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
@@ -29,11 +30,17 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
 
   frontend:
-    build: ./client   
+    build: ./client
     ports:
       - "4200:80"
+    depends_on:
+      - backend
     networks:
       - app_network
 
