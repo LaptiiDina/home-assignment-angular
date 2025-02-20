@@ -71,6 +71,8 @@ Open http://localhost:4200 to access the web app.
 
 GET '/vehicles' Get all vehicles. Optionally, use status query parameter to filter by status (active, inactive). Example: /vehicles?status=active will return only active vehicles.
 
+GET '/vehicles/:id' Get  vehicle by id.
+
 POST '/vehicles' Add a new vehicle
 
 PATCH '/vehicles/:id' Update a vehicle
