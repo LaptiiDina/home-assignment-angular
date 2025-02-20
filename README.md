@@ -4,9 +4,6 @@ Home Assignment: Vehicle Management System
 
 This project is a Vehicle Management System built using NestJS (backend), Angular (frontend), and PostgreSQL (database). The application is fully containerized using Docker.
 
-Home Assignment: Vehicle Management System
-
-
 📥 Cloning the Project
 
 To download the project, run the following command in your terminal:
