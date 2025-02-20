@@ -13,6 +13,8 @@ services:
       DB_USER: postgres
       DB_PASS: postgres
       DB_NAME: vehicles_management
+    networks:
+      - app_network
 
   postgres:
     image: postgres:15
@@ -25,11 +27,19 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
 
   frontend:
     build: ./client   
     ports:
-      - "4200:80"     
+      - "4200:80"
+    networks:
+      - app_network
 
 volumes:
   postgres_data:
+
+networks:
+  app_network:
+    driver: bridge
