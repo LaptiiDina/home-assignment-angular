@@ -50,7 +50,7 @@ home-assignment-angular/
 
 🚀 Running the Project with Docker
 To start all services, simply run:
-
+install Docker to your computer
 cd home-assignment-angular
 docker-compose up -d --build
 
