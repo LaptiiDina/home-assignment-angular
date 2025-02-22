@@ -26,8 +26,10 @@ COPY --from=builder /usr/src/app/package-lock.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/.env ./
-COPY --from=builder /usr/src/app/ormconfig.json ./
-COPY --from=builder /usr/src/app/migrations ./migrations
+COPY --from=builder /usr/src/app/ormconfig.js ./ormconfig.js
+COPY --from=builder /usr/src/app/dist/migrations ./dist/migrations
+
+
 
 # Expose the application port
 EXPOSE 3000

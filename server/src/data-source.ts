@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
-import path from 'path';
+import * as path from 'path';
+
 
 config(); 
 
@@ -16,5 +17,3 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   migrationsRun: true,
 });
-
-export default AppDataSource;
